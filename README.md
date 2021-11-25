@@ -1,5 +1,6 @@
 # cfginterpolator
 
+![example workflow](https://github.com/bbayszczak/cfginterpolator/actions/workflows/go.yml/badge.svg)
 [![Go Report Card](https://goreportcard.com/badge/github.com/bbayszczak/cfginterpolator)](https://goreportcard.com/report/github.com/bbayszczak/cfginterpolator)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
