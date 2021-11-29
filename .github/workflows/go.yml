@@ -12,4 +12,4 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Start tests
-        run: docker-compose up
+        run: make test

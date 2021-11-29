@@ -1,4 +1,4 @@
 .PHONY: test
 
 test:
-	docker compose up
+	docker-compose up --build --abort-on-container-exit
