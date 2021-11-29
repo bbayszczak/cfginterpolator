@@ -32,9 +32,37 @@ func Interpolate(conf map[string]interface{}) error {
 			conf[key] = useInterpolator(splitted[0], splitted[1])
 		case map[string]interface{}:
 			Interpolate(valueWithType)
+		case []interface{}:
+			for index, elem := range valueWithType {
+				interpolateInterface(elem, index, valueWithType)
+			}
+
 		}
 	}
 	return nil
+}
+
+func interpolateInterface(i interface{}, index int, list []interface{}) {
+	switch valueWithType := i.(type) {
+	case string:
+		re := regexp.MustCompile(fmt.Sprintf("%s.*%s.*%s", leftSeparator, interpolatorSeparator, rightSeparator))
+		match := re.Find([]byte(valueWithType))
+		if match == nil {
+			return
+		}
+		trimmedValue := strings.TrimRight(strings.TrimLeft(string(match), leftSeparator), rightSeparator)
+		splitted := strings.Split(trimmedValue, interpolatorSeparator)
+		if len(splitted) != 2 {
+			return
+		}
+		list[index] = useInterpolator(splitted[0], splitted[1])
+	case map[string]interface{}:
+		Interpolate(valueWithType)
+	case []interface{}:
+		for _, elem := range valueWithType {
+			interpolateInterface(elem, index, valueWithType)
+		}
+	}
 }
 
 func useInterpolator(interpolatorName string, value string) string {
