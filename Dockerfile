@@ -6,4 +6,4 @@ WORKDIR /cfginterpolator
 
 RUN apk add make
 
-CMD make test
+CMD go test -v ./...
