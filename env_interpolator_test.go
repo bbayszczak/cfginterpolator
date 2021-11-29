@@ -1,12 +1,14 @@
-package cfginterpolator
+package cfginterpolator_test
 
 import (
 	"os"
 	"testing"
+
+	"github.com/bbayszczak/cfginterpolator"
 )
 
 func TestEnvInterpolator(t *testing.T) {
-	var i Interpolators
+	var i cfginterpolator.Interpolators
 	name := "ENV_VAR1"
 	target := "env_var_value1"
 	os.Setenv(name, target)

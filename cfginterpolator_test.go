@@ -1,10 +1,11 @@
-package cfginterpolator
+package cfginterpolator_test
 
 import (
 	"os"
 	"reflect"
 	"testing"
 
+	"github.com/bbayszczak/cfginterpolator"
 	"gopkg.in/yaml.v3"
 )
 
@@ -53,7 +54,7 @@ func TestInterpolate(t *testing.T) {
 		t.Fatalf("cannot unmarshall target: %v", err)
 	}
 
-	Interpolate(conf)
+	cfginterpolator.Interpolate(conf)
 
 	if !reflect.DeepEqual(conf, expectedConf) {
 		t.Fatalf("expecting %s, has %s", expectedConf, conf)
