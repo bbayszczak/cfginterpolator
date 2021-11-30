@@ -8,9 +8,10 @@ import (
 )
 
 var (
-	leftSeparator         = "{{"
-	rightSeparator        = "}}"
-	interpolatorSeparator = "::"
+	leftSeparator                      = "{{"
+	rightSeparator                     = "}}"
+	interpolatorSeparator              = "::"
+	interpolatorConfigurationSeparator = ":"
 )
 
 type Interpolators struct{}
@@ -66,9 +67,13 @@ func interpolateInterface(i interface{}, index int, list []interface{}) {
 }
 
 func useInterpolator(interpolatorName string, value string) string {
+	interpolatorConf := ""
+	if strings.Contains(interpolatorName, interpolatorConfigurationSeparator) {
+		interpolatorConf = string(strings.Replace(interpolatorName, interpolatorName+interpolatorConfigurationSeparator, "", 1)[1])
+	}
 	var interpolators Interpolators
 	interpotalorFuncName := fmt.Sprintf("%sInterpolator", strings.Title(interpolatorName))
-	ret := reflect.ValueOf(&interpolators).MethodByName(interpotalorFuncName).Call([]reflect.Value{reflect.ValueOf(value)})
+	ret := reflect.ValueOf(&interpolators).MethodByName(interpotalorFuncName).Call([]reflect.Value{reflect.ValueOf(interpolatorConf), reflect.ValueOf(value)})
 	retVal := fmt.Sprintf("%v", reflect.ValueOf(ret[0]))
 	return retVal
 }

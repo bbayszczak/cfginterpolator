@@ -39,6 +39,12 @@ key4:
       listsubkey2: "env_var_val4"
 `
 
+func TestMain(m *testing.M) {
+	initVault()
+	exitCode := m.Run()
+	os.Exit(exitCode)
+}
+
 // TestInterpolate with yaml
 func TestInterpolate(t *testing.T) {
 	var conf map[string]interface{}

@@ -54,6 +54,20 @@ func main() {
 
 `{{env::ENV_VAR1}}` will be replaced by the value of the environment variable `ENV_VAR1`
 
+### Hashicorp Vault
+
+#### K/V v1
+
+`{{HASHIVAULT:KVV1::secret/path/to/secret:key}}` will be replaced by the value of the key `key` of secret `secret/path/to/secret`
+
+K/V v1 is the the default value, the two following expressions act identical: `{{HASHIVAULT::secret/path/to/secret:key}}` & `{{HASHIVAULT:KVV1::secret/path/to/secret:key}}`
+
+#### K/V v2
+
+`{{HASHIVAULT:KVV1::secret/data/path/to/secret:key}}` will be replaced by the value of the key `key` of secret `secret/path/to/secret`
+
+With `K/V v2` you need to add `data` after the secret engine name. `apps/my/secret` will become `apps/data/my/secret` 
+
 ## External datasources to be implemented
 
 - [x] environment variables
