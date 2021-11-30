@@ -46,17 +46,17 @@ func initVault() {
 	}
 }
 
-func TestHashiVaultInterpolatorKVV1(t *testing.T) {
+func TestHashivaultInterpolatorKVV1(t *testing.T) {
 	var i cfginterpolator.Interpolators
-	interpolated := i.HashiVaultInterpolator("KVV1", "secretv1/path/to/secret:secret_key_v1")
+	interpolated := i.HashivaultInterpolator("KVV1", "secretv1/path/to/secret:secret_key_v1")
 	if interpolated != "secret_value_kv_v1" {
 		t.Fatalf("value read from vault is '%s' instead of 'secret_value_kv_v1'", interpolated)
 	}
 }
 
-func TestHashiVaultInterpolatorKVV2(t *testing.T) {
+func TestHashivaultInterpolatorKVV2(t *testing.T) {
 	var i cfginterpolator.Interpolators
-	interpolated := i.HashiVaultInterpolator("KVV2", "secretv2/data/path/to/secret:secret_key_v2")
+	interpolated := i.HashivaultInterpolator("KVV2", "secretv2/data/path/to/secret:secret_key_v2")
 	if interpolated != "secret_value_kv_v2" {
 		t.Fatalf("value read from vault is '%s' instead of 'secret_value_kv_v2'", interpolated)
 	}

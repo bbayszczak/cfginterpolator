@@ -6,7 +6,7 @@ import (
 	vault "github.com/hashicorp/vault/api"
 )
 
-func (i *Interpolators) HashiVaultInterpolator(interpolatorConf string, value string) string {
+func (i *Interpolators) HashivaultInterpolator(interpolatorConf string, value string) string {
 	splitted := strings.Split(value, ":")
 	if len(splitted) != 2 {
 		return ""
