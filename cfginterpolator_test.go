@@ -40,6 +40,7 @@ key4:
 `
 
 func TestMain(m *testing.M) {
+	initVault()
 	exitCode := m.Run()
 	os.Exit(exitCode)
 }
