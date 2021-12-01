@@ -2,6 +2,7 @@
 
 ![example workflow](https://github.com/bbayszczak/cfginterpolator/actions/workflows/go.yml/badge.svg)
 [![Go Report Card](https://goreportcard.com/badge/github.com/bbayszczak/cfginterpolator)](https://goreportcard.com/report/github.com/bbayszczak/cfginterpolator)
+[![Go Reference](https://pkg.go.dev/badge/github.com/bbayszczak/cfginterpolator.svg)](https://pkg.go.dev/github.com/bbayszczak/cfginterpolator)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 cfginterpolator is an interpolate library in golang allowing to include data from external sources in your configuration
@@ -48,6 +49,8 @@ func main() {
 }
 ```
 
+Other examples can be found in the go doc [![Go Reference](https://pkg.go.dev/badge/github.com/bbayszczak/cfginterpolator.svg)](https://pkg.go.dev/github.com/bbayszczak/cfginterpolator)
+
 ## Available external datasources
 
 ### environment variables
@@ -58,13 +61,13 @@ func main() {
 
 #### K/V v1
 
-`{{HASHIVAULT:KVV1::secret/path/to/secret:key}}` will be replaced by the value of the key `key` of secret `secret/path/to/secret`
+`{{hashivault:kvv1::secret/path/to/secret:key}}` will be replaced by the value of the key `key` of secret `secret/path/to/secret`
 
-K/V v1 is the the default value, the two following expressions act identical: `{{HASHIVAULT::secret/path/to/secret:key}}` & `{{HASHIVAULT:KVV1::secret/path/to/secret:key}}`
+K/V v1 is the the default value, the two following expressions act identical: `{{hashivault::secret/path/to/secret:key}}` & `{{hashivault:kvv1::secret/path/to/secret:key}}`
 
 #### K/V v2
 
-`{{HASHIVAULT:KVV1::secret/data/path/to/secret:key}}` will be replaced by the value of the key `key` of secret `secret/path/to/secret`
+`{{hashivault:kvv2::secret/data/path/to/secret:key}}` will be replaced by the value of the key `key` of secret `secret/path/to/secret`
 
 With `K/V v2` you need to add `data` after the secret engine name. `apps/my/secret` will become `apps/data/my/secret` 
 
@@ -74,11 +77,15 @@ With `K/V v2` you need to add `data` after the secret engine name. `apps/my/secr
 
 - [ ] file
 
-- [ ] Hashicorp Vault
+- [x] Hashicorp Vault
 
 - [ ] Hashicorp Consul
 
 ## Improvements
+
+- [ ] interpolate directly from YAML file
+
+- [ ] interpolate directly from JSON file
 
 - [ ] allow to interpolate several times in the same value
 

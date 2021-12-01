@@ -30,14 +30,13 @@ func Interpolate(conf map[string]interface{}) error {
 			if len(splitted) != 2 {
 				continue
 			}
-			conf[key] = useInterpolator(splitted[0], splitted[1])
+			conf[key] = strings.ToLower(useInterpolator(splitted[0], splitted[1]))
 		case map[string]interface{}:
 			Interpolate(valueWithType)
 		case []interface{}:
 			for index, elem := range valueWithType {
 				interpolateInterface(elem, index, valueWithType)
 			}
-
 		}
 	}
 	return nil
@@ -56,7 +55,7 @@ func interpolateInterface(i interface{}, index int, list []interface{}) {
 		if len(splitted) != 2 {
 			return
 		}
-		list[index] = useInterpolator(splitted[0], splitted[1])
+		list[index] = useInterpolator(strings.ToLower(splitted[0]), splitted[1])
 	case map[string]interface{}:
 		Interpolate(valueWithType)
 	case []interface{}:
@@ -69,7 +68,9 @@ func interpolateInterface(i interface{}, index int, list []interface{}) {
 func useInterpolator(interpolatorName string, value string) string {
 	interpolatorConf := ""
 	if strings.Contains(interpolatorName, interpolatorConfigurationSeparator) {
-		interpolatorConf = string(strings.Replace(interpolatorName, interpolatorName+interpolatorConfigurationSeparator, "", 1)[1])
+		splitted := strings.Split(interpolatorName, interpolatorConfigurationSeparator)
+		interpolatorName = splitted[0]
+		interpolatorConf = splitted[1]
 	}
 	var interpolators Interpolators
 	interpotalorFuncName := fmt.Sprintf("%sInterpolator", strings.Title(interpolatorName))
