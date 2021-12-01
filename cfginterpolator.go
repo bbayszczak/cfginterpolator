@@ -16,6 +16,7 @@ var (
 
 type Interpolators struct{}
 
+// Interpolate interpolate values in a map[string]interface{}
 func Interpolate(conf map[string]interface{}) error {
 	for key, val := range conf {
 		switch valueWithType := val.(type) {
