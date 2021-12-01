@@ -67,9 +67,9 @@ func ExampleInterpolator_HashiVault() {
 	var conf map[string]interface{}
 	data := `
 ---
-key1: "{{hashivault:kvv1::secretv1/data/path/to/secret:secret_key_v1}}"
+key1: "{{hashivault:kvv1::secretv1/path/to/secret:secret_key_v1}}"
 key2:
-  subkey1: "{{hashivault::secretv1/data/path/to/secret:secret_key_v1}}"
+  subkey1: "{{hashivault::secretv1/path/to/secret:secret_key_v1}}"
 key4:
   - listkey2: "{{hashivault:kvv2::secretv2/data/path/to/secret:secret_key_v2}}"
     listkey3:
@@ -80,5 +80,5 @@ key4:
 	}
 	cfginterpolator.Interpolate(conf)
 	fmt.Println(conf)
-	// Output: map[key1: key2:map[subkey1:] key4:[map[listkey2:secret_value_kv_v2 listkey3:map[listsubkey2:secret_value_kv_v2]]]]
+	// Output: map[key1:secret_value_kv_v1 key2:map[subkey1:secret_value_kv_v1] key4:[map[listkey2:secret_value_kv_v2 listkey3:map[listsubkey2:secret_value_kv_v2]]]]
 }
