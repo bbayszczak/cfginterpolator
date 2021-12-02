@@ -31,7 +31,7 @@ func Interpolate(conf map[string]interface{}) error {
 			if len(splitted) != 2 {
 				continue
 			}
-			conf[key] = strings.ToLower(useInterpolator(splitted[0], splitted[1]))
+			conf[key] = useInterpolator(strings.ToLower(splitted[0]), splitted[1])
 		case map[string]interface{}:
 			Interpolate(valueWithType)
 		case []interface{}:
@@ -79,3 +79,25 @@ func useInterpolator(interpolatorName string, value string) string {
 	retVal := fmt.Sprintf("%v", reflect.ValueOf(ret[0]))
 	return retVal
 }
+
+// InterpolateFromYAMLFile interpolate YAML file content and write
+// interpolated content to out interface{}
+// func InterpolateFromYAMLFile(yamlFileName string, out interface{}) error {
+// 	var conf map[string]interface{}
+// 	data, err := os.ReadFile(yamlFileName)
+// 	if err != nil {
+// 		return err
+// 	}
+// 	if err := yaml.Unmarshal([]byte(data), &conf); err != nil {
+// 		return err
+// 	}
+// 	if err := Interpolate(conf); err != nil {
+// 		return err
+// 	}
+// 	fmt.Println(conf)
+// 	if err := mapstructure.Decode(conf, out); err != nil {
+// 		return err
+// 	}
+// 	fmt.Println(out)
+// 	return nil
+// }

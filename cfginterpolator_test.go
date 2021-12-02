@@ -65,4 +65,17 @@ func TestInterpolate(t *testing.T) {
 	if !reflect.DeepEqual(conf, expectedConf) {
 		t.Fatalf("expecting %s, has %s", expectedConf, conf)
 	}
+
 }
+
+// func TestInterpolateFromYAMLFile(t *testing.T) {
+// 	type Config struct {
+// 		Key1 string
+// 	}
+// 	var conf Config
+// 	if err := cfginterpolator.InterpolateFromYAMLFile("/cfginterpolator/example_files/config.yml", &conf); err != nil {
+// 		panic(err)
+// 	}
+// 	fmt.Println(conf)
+// 	// Output: map[key1:secret_value_kv_v1 key2:map[subkey1:secret_value_kv_v1] key4:[map[listkey2:secret_value_kv_v2 listkey3:map[listsubkey2:secret_value_kv_v2]]]]
+// }

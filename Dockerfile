@@ -1,9 +1,10 @@
 FROM golang:alpine
 
+RUN apk add make gcc musl-dev
+
 COPY . /cfginterpolator
 
 WORKDIR /cfginterpolator
 
-RUN apk add make gcc musl-dev
 
 CMD go test -v ./...

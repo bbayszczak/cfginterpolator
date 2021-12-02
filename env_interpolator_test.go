@@ -12,7 +12,7 @@ import (
 func TestEnvInterpolator(t *testing.T) {
 	var i cfginterpolator.Interpolators
 	name := "ENV_VAR1"
-	target := "env_var_value1"
+	target := "env_var_VALUE1"
 	os.Setenv(name, target)
 	interpolated := i.EnvInterpolator("", name)
 	if interpolated != target {
@@ -22,9 +22,9 @@ func TestEnvInterpolator(t *testing.T) {
 
 func ExampleInterpolator_Env() {
 	var conf map[string]interface{}
-	os.Setenv("ENV_VAR_1", "env_var_val_1")
-	os.Setenv("ENV_VAR_2", "env_var_val_2")
-	os.Setenv("ENV_VAR_3", "env_var_val_3")
+	os.Setenv("ENV_VAR_1", "env_var_VAL_1")
+	os.Setenv("ENV_VAR_2", "env_var_VAL_2")
+	os.Setenv("ENV_VAR_3", "env_var_VAL_3")
 	data := `
 ---
 key1: "{{env::ENV_VAR_1}}"
@@ -40,5 +40,6 @@ key4:
 	}
 	cfginterpolator.Interpolate(conf)
 	fmt.Println(conf)
-	// Output: map[key1:env_var_val_1 key2:map[subkey1:env_var_val_1] key4:[map[listkey2:env_var_val_2 listkey3:map[listsubkey2:env_var_val_3]]]]
+	// Output: map[key1:env_var_VAL_1 key2:map[subkey1:env_var_VAL_1] key4:[map[listkey2:env_var_VAL_2 listkey3:map[listsubkey2:env_var_VAL_3]]]]
+
 }

@@ -1,0 +1,6 @@
+---
+key1: "{{env::ENV_VAR_1}}"
+key2:
+  subkey1: "{{env::ENV_VAR_2}}"
+key3:
+  - listkey1: "{{env::ENV_VAR_3}}"
