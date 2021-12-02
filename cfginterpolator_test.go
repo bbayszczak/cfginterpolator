@@ -1,6 +1,7 @@
 package cfginterpolator_test
 
 import (
+	"fmt"
 	"os"
 	"reflect"
 	"testing"
@@ -68,14 +69,19 @@ func TestInterpolate(t *testing.T) {
 
 }
 
-// func TestInterpolateFromYAMLFile(t *testing.T) {
-// 	type Config struct {
-// 		Key1 string
-// 	}
-// 	var conf Config
-// 	if err := cfginterpolator.InterpolateFromYAMLFile("/cfginterpolator/example_files/config.yml", &conf); err != nil {
-// 		panic(err)
-// 	}
-// 	fmt.Println(conf)
-// 	// Output: map[key1:secret_value_kv_v1 key2:map[subkey1:secret_value_kv_v1] key4:[map[listkey2:secret_value_kv_v2 listkey3:map[listsubkey2:secret_value_kv_v2]]]]
-// }
+func ExampleInterpolateFromYAMLFile() {
+	type Config struct {
+		Key1 string
+		Key2 map[string]string
+		Key3 []map[string]string
+	}
+	os.Setenv("ENV_VAR_1", "secret_value_1_kv_V1")
+	os.Setenv("ENV_VAR_2", "secret_value_2_kv_V1")
+	os.Setenv("ENV_VAR_3", "secret_value_3_kv_V1")
+	var conf Config
+	if err := cfginterpolator.InterpolateFromYAMLFile("/cfginterpolator/example_files/config.yml", &conf); err != nil {
+		panic(err)
+	}
+	fmt.Println(conf)
+	// Output: {secret_value_1_kv_V1 map[subkey1:secret_value_2_kv_V1] [map[listkey1:secret_value_3_kv_V1]]}
+}
