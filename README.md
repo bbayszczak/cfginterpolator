@@ -81,7 +81,7 @@ With `K/V v2` you need to add `data` after the secret engine name. `apps/my/secr
 
 ## Improvements
 
-- [ ] interpolate directly from YAML file
+- [x] interpolate directly from YAML file
 
 - [ ] interpolate directly from JSON file
 
