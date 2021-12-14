@@ -23,29 +23,20 @@ After `cfginterpolator` `Interpolate` job, you can use https://github.com/mitche
 package main
 
 import (
-    "github.com/mitchellh/mapstructure"
     "github.com/bbayszczak/cfginterpolator"
 )
 
 type Config struct {
-    Username string
-    Password string
+	Key1 string
+	Key2 map[string]string
+	Key3 []map[string]string
 }
-
-var rawConfig = `
----
-username: "John-David"
-password: "{{env::PASSWORD}}"
-`
-
-func main() {
-    var config map[string]interface{}
-    var configStruct Config
-    if err := yaml.Unmarshal([]byte(rawConfig), &config); err != nil {
-		panic("cannot unmarshall data: %v", err)
-	}
-    cfginterpolator.Interpolate(config)
-    mapstructure.Decode(config, &configStruct)
+os.Setenv("ENV_VAR_1", "secret_value_1_kv_V1")
+os.Setenv("ENV_VAR_2", "secret_value_2_kv_V1")
+os.Setenv("ENV_VAR_3", "secret_value_3_kv_V1")
+var conf Config
+if err := cfginterpolator.InterpolateFromYAMLFile("cfginterpolator/example_files/config.yml", &conf); err != nil {
+	panic(err)
 }
 ```
 
@@ -58,6 +49,13 @@ Other examples can be found in the go doc [![Go Reference](https://pkg.go.dev/ba
 `{{env::ENV_VAR1}}` will be replaced by the value of the environment variable `ENV_VAR1`
 
 ### Hashicorp Vault
+
+#### Prequisites
+
+- Environment variable `VAULT_ADDR` should contains the Vault address (e.g.: `https://vault.mydomain.com:8200`)
+
+- A Vault token should exists in environment variable `VAULT_TOKEN` on in file `$HOME/.vault-token`. The enviroment
+variable takes predence over the file if both are set.
 
 #### K/V v1
 

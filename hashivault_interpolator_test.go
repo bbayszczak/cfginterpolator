@@ -17,6 +17,10 @@ func initVault() {
 	if os.Getenv("VAULT_TOKEN") == "" {
 		os.Setenv("VAULT_TOKEN", "myroot")
 	}
+	err := os.WriteFile(fmt.Sprintf("%s/.vault-token", os.Getenv("HOME")), []byte("myroot"), 0644)
+	if err != nil {
+		fmt.Printf("cannot create Vault token file: '%s'\n", err)
+	}
 	config := vault.DefaultConfig()
 	client, err := vault.NewClient(config)
 	if err != nil {
@@ -60,6 +64,21 @@ func TestHashivaultInterpolatorKVV2(t *testing.T) {
 	interpolated := i.HashivaultInterpolator("kvv2", "secretv2/data/path/to/secret:secret_key_v2")
 	if interpolated != "secret_value_kv_v2" {
 		t.Fatalf("value read from vault is '%s' instead of 'secret_value_kv_v2'", interpolated)
+	}
+}
+
+func TestHashivaultInterpolatorKVV1TokenFromFile(t *testing.T) {
+	if err := os.Unsetenv("VAULT_TOKEN"); err != nil {
+		t.Fatalf("cannot unset env var VAULT_TOKEN: %s", err)
+	}
+	err := os.WriteFile(fmt.Sprintf("%s/.vault-token", os.Getenv("HOME")), []byte("myroot"), 0644)
+	if err != nil {
+		fmt.Printf("cannot create Vault token file: '%s'\n", err)
+	}
+	var i cfginterpolator.Interpolators
+	interpolated := i.HashivaultInterpolator("kvv1", "secretv1/path/to/secret:secret_key_v1")
+	if interpolated != "secret_value_kv_v1" {
+		t.Fatalf("value read from vault is '%s' instead of 'secret_value_kv_v1'", interpolated)
 	}
 }
 
