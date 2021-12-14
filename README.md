@@ -7,15 +7,26 @@
 
 cfginterpolator is an interpolate library in golang allowing to include data from external sources in your configuration
 
-cfginterpolator ingest a `map[string]interface{}` with as many nested `map[string]interface{}` as you want.
+cfginterpolator can ingest several types of data:
 
-This data structure can, as example, be produced by:
+- a `yaml` file
 
-- a `yaml` file read by `gopkg.in/yaml.v3`
+```yaml
+---
+key1: "{{env::ENV_VAR1}}"
+key2:
+  subkey1: "{{env::ENV_VAR2}}"
+  subkey2: "{{env::wrongly_formatted::value}}"
+key3: value
+key4:
+  - listkey1: listvalue1
+  - listkey2: "{{env::ENV_VAR3}}"
+  - listkey3:
+      listsubkey1: listsubvalue1
+      listsubkey2: "{{env::ENV_VAR4}}"
+```
 
-- a `json` file read by `encoding/json`
-
-After `cfginterpolator` `Interpolate` job, you can use https://github.com/mitchellh/mapstructure to inject the `map[string]interface{}` interpolated by `cfginterpolator` to any kind of `struct` you defined.
+- a `map[string]interface{}` with as many nested `map[string]interface{}` as you want
 
 ## Example
 
