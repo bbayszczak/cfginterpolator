@@ -63,6 +63,10 @@ variable takes predence over the file if both are set.
 
 K/V v1 is the the default value, the two following expressions act identical: `{{hashivault::secret/path/to/secret:key}}` & `{{hashivault:kvv1::secret/path/to/secret:key}}`
 
+#### K/V v1 JSON
+
+`{{hashivault:kvv1_json::secret/path/to/secret}}` will be replaced by secret `secret/path/to/secret` JSON value
+
 #### K/V v2
 
 `{{hashivault:kvv2::secret/data/path/to/secret:key}}` will be replaced by the value of the key `key` of secret `secret/path/to/secret`

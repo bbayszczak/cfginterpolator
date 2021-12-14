@@ -10,12 +10,19 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
+var vault_addr string = "http://vault:8200"
+var vault_token string = "myroot"
+
 func initVault() {
 	if os.Getenv("VAULT_ADDR") == "" {
-		os.Setenv("VAULT_ADDR", "http://vault:8200")
+		os.Setenv("VAULT_ADDR", vault_addr)
+	} else {
+		vault_addr = os.Getenv("VAULT_ADDR")
 	}
 	if os.Getenv("VAULT_TOKEN") == "" {
-		os.Setenv("VAULT_TOKEN", "myroot")
+		os.Setenv("VAULT_TOKEN", vault_token)
+	} else {
+		vault_token = os.Getenv("VAULT_TOKEN")
 	}
 	err := os.WriteFile(fmt.Sprintf("%s/.vault-token", os.Getenv("HOME")), []byte("myroot"), 0644)
 	if err != nil {
@@ -59,6 +66,14 @@ func TestHashivaultInterpolatorKVV1(t *testing.T) {
 	}
 }
 
+func TestHashivaultInterpolatorKVV1JSON(t *testing.T) {
+	var i cfginterpolator.Interpolators
+	interpolated := i.HashivaultInterpolator("kvv1_json", "secretv1/path/to/secret")
+	if interpolated != "{\"secret_key_v1\":\"secret_value_kv_v1\"}" {
+		t.Fatalf("value read from vault is '%s' instead of 'secret_value_kv_v1'", interpolated)
+	}
+}
+
 func TestHashivaultInterpolatorKVV2(t *testing.T) {
 	var i cfginterpolator.Interpolators
 	interpolated := i.HashivaultInterpolator("kvv2", "secretv2/data/path/to/secret:secret_key_v2")
@@ -80,6 +95,10 @@ func TestHashivaultInterpolatorKVV1TokenFromFile(t *testing.T) {
 	if interpolated != "secret_value_kv_v1" {
 		t.Fatalf("value read from vault is '%s' instead of 'secret_value_kv_v1'", interpolated)
 	}
+	if err := os.Remove(fmt.Sprintf("%s/.vault-token", os.Getenv("HOME"))); err != nil {
+		t.Fatalf("cannot remove Vault token file: '%s'\n", err)
+	}
+	os.Setenv("VAULT_TOKEN", vault_token)
 }
 
 func ExampleInterpolator_HashiVault() {
