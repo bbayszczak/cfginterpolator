@@ -12,3 +12,10 @@ services:
   tests:
     build:
       context: .
+  consul:
+    image: "consul:latest"
+    ports:
+      - "8500:8500"
+  tests:
+    build:
+      context: .

@@ -42,6 +42,7 @@ key4:
 
 func TestMain(m *testing.M) {
 	initVault()
+	initConsul()
 	exitCode := m.Run()
 	os.Exit(exitCode)
 }

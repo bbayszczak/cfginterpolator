@@ -84,6 +84,18 @@ K/V v1 is the the default value, the two following expressions act identical: `{
 
 With `K/V v2` you need to add `data` after the secret engine name. `apps/my/secret` will become `apps/data/my/secret` 
 
+### Hashicorp Consul
+
+#### Prequisites
+
+- Environment variable `CONSUL_HTTP_ADDR` should contains the Consul address (e.g.: `consul.mydomain.com:8500`)
+
+- If a Consul token is needed to access the K/V, it needs to be in the environment variable `CONSUL_HTTP_TOKEN`
+
+#### K/V
+
+`{{consul:kv::path/to/key}}` will be replaced by the vlue in the key `path/to/key`
+
 ## External datasources to be implemented
 
 - [x] environment variables
@@ -92,7 +104,7 @@ With `K/V v2` you need to add `data` after the secret engine name. `apps/my/secr
 
 - [x] Hashicorp Vault
 
-- [ ] Hashicorp Consul
+- [x] Hashicorp Consul
 
 ## Improvements
 
