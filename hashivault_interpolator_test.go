@@ -116,7 +116,7 @@ key4:
 	if err := yaml.Unmarshal([]byte(data), &conf); err != nil {
 		panic(err)
 	}
-	cfginterpolator.Interpolate(conf)
+	cfginterpolator.Interpolate(conf, nil)
 	fmt.Println(conf)
 	// Output: map[key1:secret_value_kv_v1 key2:map[subkey1:secret_value_kv_v1] key4:[map[listkey2:secret_value_kv_v2 listkey3:map[listsubkey2:secret_value_kv_v2]]]]
 }

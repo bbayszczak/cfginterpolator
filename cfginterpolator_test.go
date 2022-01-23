@@ -5,6 +5,7 @@ import (
 	"os"
 	"reflect"
 	"testing"
+	"time"
 
 	"github.com/bbayszczak/cfginterpolator"
 	"gopkg.in/yaml.v3"
@@ -62,7 +63,7 @@ func TestInterpolate(t *testing.T) {
 		t.Fatalf("cannot unmarshall target: %v", err)
 	}
 
-	cfginterpolator.Interpolate(conf)
+	cfginterpolator.Interpolate(conf, nil)
 
 	if !reflect.DeepEqual(conf, expectedConf) {
 		t.Fatalf("expecting %s, has %s", expectedConf, conf)
@@ -80,9 +81,39 @@ func ExampleInterpolateFromYAMLFile() {
 	os.Setenv("ENV_VAR_2", "secret_value_2_kv_V1")
 	os.Setenv("ENV_VAR_3", "secret_value_3_kv_V1")
 	var conf Config
-	if err := cfginterpolator.InterpolateFromYAMLFile("/cfginterpolator/example_files/config.yml", &conf); err != nil {
+	if err := cfginterpolator.InterpolateFromYAMLFile("example_files/config.yml", &conf); err != nil {
 		panic(err)
 	}
 	fmt.Println(conf)
 	// Output: {secret_value_1_kv_V1 map[subkey1:secret_value_2_kv_V1] [map[listkey1:secret_value_3_kv_V1]]}
+}
+
+func ExampleInterpolateAndWatchYAMLFile() {
+	type Config struct {
+		Key1 string
+		Key2 map[string]string
+		Key3 []map[string]string
+	}
+	os.Setenv("ENV_VAR_1", "var1_0")
+	os.Setenv("ENV_VAR_2", "var2")
+	os.Setenv("ENV_VAR_3", "var3")
+	var conf Config
+
+	cfginterpolator.ReloadInterval = time.Second
+	go func() {
+		time.Sleep(500 * time.Millisecond)
+		if err := cfginterpolator.InterpolateAndWatchYAMLFile("example_files/config.yml", &conf); err != nil {
+			fmt.Println(err)
+		}
+	}()
+	for i := 1; i <= 3; i++ {
+		time.Sleep(time.Second)
+		os.Setenv("ENV_VAR_1", fmt.Sprintf("var1_%d", i))
+		fmt.Printf("%d: %s\n", i, conf)
+	}
+
+	// Output:
+	//1: {var1_0 map[subkey1:var2] [map[listkey1:var3]]}
+	//2: {var1_1 map[subkey1:var2] [map[listkey1:var3]]}
+	//3: {var1_2 map[subkey1:var2] [map[listkey1:var3]]}
 }

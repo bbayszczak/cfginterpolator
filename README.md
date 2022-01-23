@@ -7,6 +7,9 @@
 
 cfginterpolator is an interpolate library in golang allowing to include data from external sources in your configuration
 
+It will also allow you to keep your configuration up to date when a value change in one of any external data source.
+See section `configuration reload` of this README.
+
 cfginterpolator can ingest several types of data:
 
 - a `yaml` file
@@ -95,6 +98,15 @@ With `K/V v2` you need to add `data` after the secret engine name. `apps/my/secr
 #### K/V
 
 `{{consul:kv::path/to/key}}` will be replaced by the vlue in the key `path/to/key`
+
+## Configuration reload
+
+Using the method `InterpolateAndWatchYAMLFile` will not return any value except if an error occured
+
+While this function runs, the object provided for configuration storage will be kept up to date
+with external data sources specified.
+
+See function example in go doc
 
 ## External datasources to be implemented
 

@@ -38,7 +38,7 @@ key4:
 	if err := yaml.Unmarshal([]byte(data), &conf); err != nil {
 		panic(err)
 	}
-	cfginterpolator.Interpolate(conf)
+	cfginterpolator.Interpolate(conf, nil)
 	fmt.Println(conf)
 	// Output: map[key1:env_var_VAL_1 key2:map[subkey1:env_var_VAL_1] key4:[map[listkey2:env_var_VAL_2 listkey3:map[listsubkey2:env_var_VAL_3]]]]
 

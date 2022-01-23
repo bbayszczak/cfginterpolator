@@ -6,5 +6,4 @@ COPY . /cfginterpolator
 
 WORKDIR /cfginterpolator
 
-
-CMD go test -v ./...
+CMD go test -v -cover ./...

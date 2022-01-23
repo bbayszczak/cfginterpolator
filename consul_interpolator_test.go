@@ -53,7 +53,7 @@ key1: "{{consul::path/to/consul_key}}"
 	if err := yaml.Unmarshal([]byte(data), &conf); err != nil {
 		panic(err)
 	}
-	cfginterpolator.Interpolate(conf)
+	cfginterpolator.Interpolate(conf, nil)
 	fmt.Println(conf)
 	// Output: map[key1:consul_value]
 }
