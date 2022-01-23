@@ -43,7 +43,6 @@ key4:
 
 func TestMain(m *testing.M) {
 	initVault()
-	initConsul()
 	exitCode := m.Run()
 	os.Exit(exitCode)
 }
@@ -116,4 +115,28 @@ func ExampleInterpolateAndWatchYAMLFile() {
 	//1: {var1_0 map[subkey1:var2] [map[listkey1:var3]]}
 	//2: {var1_1 map[subkey1:var2] [map[listkey1:var3]]}
 	//3: {var1_2 map[subkey1:var2] [map[listkey1:var3]]}
+}
+
+func ExampleInterpolateAndWatchYAMLFile_Consul() {
+	type Config struct {
+		Key1 string
+	}
+	var conf Config
+
+	cfginterpolator.ReloadInterval = 1 * time.Minute
+	go func() {
+		if err := cfginterpolator.InterpolateAndWatchYAMLFile("example_files/config_consul.yml", &conf); err != nil {
+			fmt.Println(err)
+		}
+	}()
+	for i := 1; i <= 3; i++ {
+		writeConsulKey("path/to/consul_key_watch", fmt.Sprintf("consul_watch_val%d", i))
+		time.Sleep(100 * time.Millisecond)
+		fmt.Printf("%d: %s\n", i, conf)
+	}
+
+	// Output:
+	//1: {consul_watch_val1}
+	//2: {consul_watch_val2}
+	//3: {consul_watch_val3}
 }

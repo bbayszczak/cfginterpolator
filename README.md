@@ -99,6 +99,10 @@ With `K/V v2` you need to add `data` after the secret engine name. `apps/my/secr
 
 `{{consul:kv::path/to/key}}` will be replaced by the vlue in the key `path/to/key`
 
+#### Reload
+
+Consul data source handle reload as soon as the key is modified. It does not needs to wait the reload interval
+
 ## Configuration reload
 
 Using the method `InterpolateAndWatchYAMLFile` will not return any value except if an error occured

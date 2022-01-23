@@ -38,7 +38,7 @@ func Interpolate(conf map[string]interface{}, reloadChan chan string) error {
 			if len(splitted) != 2 {
 				continue
 			}
-			conf[key] = useInterpolator(strings.ToLower(splitted[0]), splitted[1])
+			conf[key] = useInterpolator(strings.ToLower(splitted[0]), splitted[1], reloadChan)
 		case map[string]interface{}:
 			Interpolate(valueWithType, reloadChan)
 		case []interface{}:
@@ -63,7 +63,7 @@ func interpolateInterface(i interface{}, index int, list []interface{}, reloadCh
 		if len(splitted) != 2 {
 			return
 		}
-		list[index] = useInterpolator(strings.ToLower(splitted[0]), splitted[1])
+		list[index] = useInterpolator(strings.ToLower(splitted[0]), splitted[1], reloadChan)
 	case map[string]interface{}:
 		Interpolate(valueWithType, reloadChan)
 	case []interface{}:
@@ -73,7 +73,7 @@ func interpolateInterface(i interface{}, index int, list []interface{}, reloadCh
 	}
 }
 
-func useInterpolator(interpolatorName string, value string) string {
+func useInterpolator(interpolatorName string, value string, reloadChan chan string) string {
 	interpolatorConf := ""
 	if strings.Contains(interpolatorName, InterpolatorConfigurationSeparator) {
 		splitted := strings.Split(interpolatorName, InterpolatorConfigurationSeparator)
@@ -82,7 +82,7 @@ func useInterpolator(interpolatorName string, value string) string {
 	}
 	var interpolators Interpolators
 	interpotalorFuncName := fmt.Sprintf("%sInterpolator", strings.Title(interpolatorName))
-	ret := reflect.ValueOf(&interpolators).MethodByName(interpotalorFuncName).Call([]reflect.Value{reflect.ValueOf(interpolatorConf), reflect.ValueOf(value)})
+	ret := reflect.ValueOf(&interpolators).MethodByName(interpotalorFuncName).Call([]reflect.Value{reflect.ValueOf(interpolatorConf), reflect.ValueOf(value), reflect.ValueOf(reloadChan)})
 	retVal := fmt.Sprintf("%v", reflect.ValueOf(ret[0]))
 	return retVal
 }

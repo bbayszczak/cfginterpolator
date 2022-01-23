@@ -60,7 +60,7 @@ func initVault() {
 
 func TestHashivaultInterpolatorKVV1(t *testing.T) {
 	var i cfginterpolator.Interpolators
-	interpolated := i.HashivaultInterpolator("kvv1", "secretv1/path/to/secret:secret_key_v1")
+	interpolated := i.HashivaultInterpolator("kvv1", "secretv1/path/to/secret:secret_key_v1", nil)
 	if interpolated != "secret_value_kv_v1" {
 		t.Fatalf("value read from vault is '%s' instead of 'secret_value_kv_v1'", interpolated)
 	}
@@ -68,7 +68,7 @@ func TestHashivaultInterpolatorKVV1(t *testing.T) {
 
 func TestHashivaultInterpolatorKVV1JSON(t *testing.T) {
 	var i cfginterpolator.Interpolators
-	interpolated := i.HashivaultInterpolator("kvv1_json", "secretv1/path/to/secret")
+	interpolated := i.HashivaultInterpolator("kvv1_json", "secretv1/path/to/secret", nil)
 	if interpolated != "{\"secret_key_v1\":\"secret_value_kv_v1\"}" {
 		t.Fatalf("value read from vault is '%s' instead of 'secret_value_kv_v1'", interpolated)
 	}
@@ -76,7 +76,7 @@ func TestHashivaultInterpolatorKVV1JSON(t *testing.T) {
 
 func TestHashivaultInterpolatorKVV2(t *testing.T) {
 	var i cfginterpolator.Interpolators
-	interpolated := i.HashivaultInterpolator("kvv2", "secretv2/data/path/to/secret:secret_key_v2")
+	interpolated := i.HashivaultInterpolator("kvv2", "secretv2/data/path/to/secret:secret_key_v2", nil)
 	if interpolated != "secret_value_kv_v2" {
 		t.Fatalf("value read from vault is '%s' instead of 'secret_value_kv_v2'", interpolated)
 	}
@@ -91,7 +91,7 @@ func TestHashivaultInterpolatorKVV1TokenFromFile(t *testing.T) {
 		fmt.Printf("cannot create Vault token file: '%s'\n", err)
 	}
 	var i cfginterpolator.Interpolators
-	interpolated := i.HashivaultInterpolator("kvv1", "secretv1/path/to/secret:secret_key_v1")
+	interpolated := i.HashivaultInterpolator("kvv1", "secretv1/path/to/secret:secret_key_v1", nil)
 	if interpolated != "secret_value_kv_v1" {
 		t.Fatalf("value read from vault is '%s' instead of 'secret_value_kv_v1'", interpolated)
 	}

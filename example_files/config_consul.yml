@@ -1,0 +1,2 @@
+---
+key1: "{{consul::path/to/consul_key_watch}}"

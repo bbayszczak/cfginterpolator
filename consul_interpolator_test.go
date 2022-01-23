@@ -13,7 +13,7 @@ import (
 var consul_http_addr string = "http://consul:8500"
 var consul_http_token string = ""
 
-func initConsul() {
+func writeConsulKey(key string, value string) {
 	if os.Getenv("CONSUL_HTTP_ADDR") == "" {
 		os.Setenv("CONSUL_HTTP_ADDR", consul_http_addr)
 	} else {
@@ -29,7 +29,7 @@ func initConsul() {
 		fmt.Printf("cannot instanciate Consul client: '%s'\n", err)
 	}
 
-	p := &consul.KVPair{Key: "path/to/consul_key", Value: []byte("consul_value")}
+	p := &consul.KVPair{Key: key, Value: []byte(value)}
 	_, err = consulClient.KV().Put(p, nil)
 	if err != nil {
 		fmt.Printf("cannot write in Consul KV: '%s'\n", err)
@@ -37,14 +37,24 @@ func initConsul() {
 }
 
 func TestConsulInterpolator(t *testing.T) {
+	writeConsulKey("path/to/consul_key", "consul_value")
 	var i cfginterpolator.Interpolators
-	interpolated := i.ConsulInterpolator("", "path/to/consul_key")
+	interpolated := i.ConsulInterpolator("", "path/to/consul_key", nil)
 	if interpolated != "consul_value" {
 		t.Fatalf("value read from Consul is '%s' instead of 'consul_value'", interpolated)
 	}
 }
 
+func TestConsulInterpolator_MissingKey(t *testing.T) {
+	var i cfginterpolator.Interpolators
+	interpolated := i.ConsulInterpolator("", "missing", nil)
+	if interpolated != "" {
+		t.Fatalf("value read from Consul is '%s' instead of ''", interpolated)
+	}
+}
+
 func ExampleInterpolator_Consul() {
+	writeConsulKey("path/to/consul_key", "consul_value")
 	var conf map[string]interface{}
 	data := `
 ---

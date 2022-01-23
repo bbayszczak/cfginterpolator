@@ -9,7 +9,7 @@ import (
 	vault "github.com/hashicorp/vault/api"
 )
 
-func (i *Interpolators) HashivaultInterpolator(interpolatorConf string, value string) string {
+func (i *Interpolators) HashivaultInterpolator(interpolatorConf string, value string, reloadChan chan string) string {
 	client, err := getVaultClient()
 	if err != nil {
 		return ""
